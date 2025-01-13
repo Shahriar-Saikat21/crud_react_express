@@ -7,6 +7,7 @@ const Home = () => {
   const [contacts, setContacts] = useState([]); 
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedContactId, setSelectedContactId] = useState(null);
 
   // Fetch all contacts on component mount
   useEffect(() => {
@@ -26,6 +27,11 @@ const Home = () => {
     };
     fetchContacts();
   }, []);
+
+  const handleDeleteClick = (contactId) => {
+    setSelectedContactId(contactId);
+    setShowDeleteModal(true);
+  };
 
   return (
     <div className="w-full md:mx-w-[1460px]">
@@ -86,7 +92,7 @@ const Home = () => {
                           <button
                             type="submit"
                             className="text-red-500 hover:text-red-700 font-primary font-bold"
-                            onClick={() => setShowDeleteModal(true)}
+                            onClick={() => handleDeleteClick(contact._id)}
                           >
                             Delete
                           </button>
@@ -110,9 +116,8 @@ const Home = () => {
 
       <DeleteModal
         isVisible={showDeleteModal}
-        onClose={() => {
-          setShowDeleteModal(false);
-        }}
+        onClose={() => setShowDeleteModal(false)}
+        deleteId={selectedContactId}
       />
     </div>
   );

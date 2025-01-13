@@ -100,8 +100,8 @@ const UpdateModal = ({ isVisible, onClose }) => {
               {...register("phone", {
                 required: "Phone number is required",
                 pattern: {
-                  value: /^[0-9]{10}$/,
-                  message: "Enter a valid 10-digit phone number",
+                  value: /^[0-9]{11}$/,
+                  message: "Enter a valid 11-digit phone number",
                 },
               })}
               className={`mt-1 block w-full rounded-md border px-2 py-1 focus:outline-none ${
