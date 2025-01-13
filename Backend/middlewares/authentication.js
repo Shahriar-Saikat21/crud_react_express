@@ -9,7 +9,7 @@ export function authentication(req,res,next){
         const {userName,id} = decoded;
         //send this data to next middleware to use if needed
         req.userName = userName;
-        req.userId = id;
+        req.id = id;
         next();
     }catch{
         next({message:"Please Login First"});

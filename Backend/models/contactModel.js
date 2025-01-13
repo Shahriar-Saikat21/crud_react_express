@@ -15,10 +15,7 @@ const contactSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    user : {
-        type : mongoose.Types.ObjectId,
-        ref : 'user',
-    }
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
 });
 
 export const Contact = mongoose.model('contact',contactSchema);

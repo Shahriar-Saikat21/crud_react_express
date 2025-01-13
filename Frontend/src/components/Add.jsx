@@ -1,9 +1,28 @@
 import { useForm } from "react-hook-form";
+import axios from "../utilities/axios";
+
+const addData = async(data)=>{
+  try {
+    const response = await axios.post("/add", data, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding contact:", error);
+  }
+
+}
 
 const Add = () => {
   const {register,handleSubmit,formState: { errors },reset} = useForm();
 
-  const onSubmit = () => {
+  const onSubmit = async (data) => {
+    const result = await addData(data);
+    if (result.success) {
+      alert("Contact Created successfully");
+    } else {
+      alert("An error occurred. Please try again later.");
+    }
     reset();
   };
 
@@ -26,7 +45,7 @@ const Add = () => {
           <input
             id="name"
             type="text"
-            {...register("name", { required: "Name is required" })}
+            {...register("contactName", { required: "Name is required" })}
             className={`mt-1 block w-full rounded-md border px-2 py-1 focus:outline-none ${
               errors.name ? "border-red-500" : "border-gray-300"
             } shadow-sm focus:ring-blue-500 focus:border-blue-500`}
@@ -79,8 +98,8 @@ const Add = () => {
             {...register("phone", {
               required: "Phone number is required",
               pattern: {
-                value: /^[0-9]{10}$/,
-                message: "Enter a valid 10-digit phone number",
+                value: /^[0-9]{11}$/,
+                message: "Enter a valid 11-digit phone number",
               },
             })}
             className={`mt-1 block w-full rounded-md border px-2 py-1 focus:outline-none ${

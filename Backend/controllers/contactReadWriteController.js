@@ -7,29 +7,26 @@ export const contactReadWriteController = {};
 contactReadWriteController.add = async(req,res) => {
     try {
         const { contactName, address, email, phone } = req.body;
-        const user = req.id;
 
-        // Validate required fields
         if (!contactName || !phone) {
-            return res.json({sucess : false });
+            return res.json({ success: false });
         }
 
-        // Create a new contact
         const newContact = new Contact({
             contactName,
-            address: address || "", // Default to an empty string if not provided
-            email: email || "",     // Default to an empty string if not provided
+            address: address || "", 
+            email: email || "",
             phone,
-            user,
+            user: req.id,
         });
 
-        // Save the contact to the database
+
         const savedContact = await newContact.save();
 
-        res.json({sucess : true});
+        res.json({ success: true });
     } catch (error) {
-        console.error("Error saving contact:", error);
-        res.json({sucess : false });
+        console.error("Error in add controller:", error.message);
+        res.json({ success: false });
     }
 }
 
