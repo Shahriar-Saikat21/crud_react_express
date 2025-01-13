@@ -1,12 +1,10 @@
-function updateContact(){
-  console.log("Update Btn Clicked")
-}
-
-function deleteContact(){
-  console.log("Delete Btn Clicked")
-}
+import { useState } from "react"
+import UpdateModal from "./UpdateModal"
+import DeleteModal from "./DeleteModal"
 
 const Home = () => {
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   return (
     <div className="w-full md:mx-w-[1460px]">
       <h1 className="text-3xl font-primary font-semibold text-black md:pl-[100px] mb-1 text-center">
@@ -50,12 +48,12 @@ const Home = () => {
                       888-9999
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      <button type="submit" className="text-green-500 hover:text-green-700 font-primary font-bold" onClick={()=>updateContact()}>
+                      <button type="submit" className="text-green-500 hover:text-green-700 font-primary font-bold" onClick={() => setShowUpdateModal(true)}>
                         Update
                       </button>
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      <button type="submit" className="text-red-500 hover:text-red-700 font-primary font-bold" onClick={()=>deleteContact()}>
+                      <button type="submit" className="text-red-500 hover:text-red-700 font-primary font-bold" onClick={()=>setShowDeleteModal(true)}>
                         Delete
                       </button>
                     </td>
@@ -66,6 +64,14 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <UpdateModal isVisible={showUpdateModal} onClose={()=>{
+        setShowUpdateModal(false);
+      }}/>
+
+      <DeleteModal isVisible={showDeleteModal} onClose={()=>{
+        setShowDeleteModal(false);
+      }}/>
     </div>
   )
 }

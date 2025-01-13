@@ -4,9 +4,21 @@
 @tailwind components;
 @tailwind utilities;
 
-.btn {
+  .btn {
     @apply text-lg text-[#4caf50] border-2 font-bold bg-white my-5 py-2 
       block px-2 rounded-md hover:bg-[#4caf50] hover:text-[#ffffff]  
+      hover:border-2 hover:border-[#ffffff] md:w-1/2 w-full transition duration-300 ease-in font-primary;
+  }
+
+  .btn-Delete {
+    @apply text-lg text-[#eb491c] border-2 font-bold bg-white my-5 py-2 
+      block px-2 rounded-md hover:bg-[#eb491c] hover:text-[#ffffff]  
+      hover:border-2 hover:border-[#ffffff] md:w-1/2 w-full transition duration-300 ease-in font-primary;
+  }
+
+  .btn-Cancel {
+    @apply text-lg text-[#8a8c8a] border-2 font-bold bg-white my-5 py-2 
+      block px-2 rounded-md hover:bg-[#8a8c8a] hover:text-[#ffffff]  
       hover:border-2 hover:border-[#ffffff] md:w-1/2 w-full transition duration-300 ease-in font-primary;
   }
   
