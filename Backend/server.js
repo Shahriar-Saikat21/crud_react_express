@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 
 import connectDB from './middlewares/databaseConnection.js';  
 import {credentialRouter} from './routes/credentialRoute.js';
+import { contactReadWriteRouter } from './routes/contactsReadWriteRoute.js';
+import {contactUpdateDeleteRouter} from './routes/contactUpdateDeleteRoute.js';
 
 //App Initialized
 const app = express();
@@ -23,7 +25,8 @@ app.use(cors({
 
 //Connect All Router
 app.use(credentialRouter);
-
+app.use(contactReadWriteRouter);
+app.use(contactUpdateDeleteRouter);
 
 // Server Started
 app.listen(process.env.PORT, async() => {
