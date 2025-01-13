@@ -6,20 +6,19 @@ export const contactUpdateDeleteController = {};
 //update a contact detail
 contactUpdateDeleteController.update = async(req,res)=>{
     try {
-        const { id } = req.query.id;
-        const updates = req.body;
-
-        // Update the contact with only the provided fields
-        const updatedContact = await Contact.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
-
-        if (!updatedContact) {
-            return res.json({ success:false});
-        }
-
-        res.json( { success:true});
+        await Contact.updateOne({
+            _id:req.query.id},
+            {$set:{
+                contactName:req.body.contactName,
+                address:req.body.address,
+                email:req.body.email,
+                phone:req.body.phone
+            }
+        });
+        res.json({success:true});
     } catch (error) {
-        console.error("Error updating contact:", error);
-        res.json({ success:false})
+        console.log(error);
+        res.json({success:false});
     }
 }
 

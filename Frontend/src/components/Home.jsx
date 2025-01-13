@@ -8,6 +8,7 @@ const Home = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedContactId, setSelectedContactId] = useState(null);
+  const [selectedContact, setSelectedContact] = useState(null);
 
   // Fetch all contacts on component mount
   useEffect(() => {
@@ -31,6 +32,11 @@ const Home = () => {
   const handleDeleteClick = (contactId) => {
     setSelectedContactId(contactId);
     setShowDeleteModal(true);
+  };
+
+  const handleUpdateClick = (selectedContact) => {
+    setSelectedContact(selectedContact);
+    setShowUpdateModal(true);
   };
 
   return (
@@ -83,7 +89,7 @@ const Home = () => {
                           <button
                             type="submit"
                             className="text-green-500 hover:text-green-700 font-primary font-bold"
-                            onClick={() => setShowUpdateModal(true)}
+                            onClick={() => handleUpdateClick(contact)}
                           >
                             Update
                           </button>
@@ -112,6 +118,7 @@ const Home = () => {
         onClose={() => {
           setShowUpdateModal(false);
         }}
+        contactDetail = {selectedContact}
       />
 
       <DeleteModal

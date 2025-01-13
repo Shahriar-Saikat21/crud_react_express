@@ -1,17 +1,44 @@
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import axios from "../utilities/axios"; 
 
-const UpdateModal = ({ isVisible, onClose }) => {
+const UpdateModal = ({ isVisible, onClose, contactDetail }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue, 
   } = useForm();
 
-  const onSubmit = () => {
-    console.log("Update btn Clicked")
-    reset();
+  useEffect(() => {
+    if (contactDetail) {
+      setValue("contactName", contactDetail.contactName);
+      setValue("address", contactDetail.address);
+      setValue("email", contactDetail.email);
+      setValue("phone", contactDetail.phone);
+    }
+  }, [contactDetail, setValue]);
+
+  const onSubmit = async (data) => {
+    try {
+
+      const response = await axios.put(`/update?id=${contactDetail._id}`, data, {
+        withCredentials: true, 
+      });
+
+      if (response.data.success) {
+        onClose();
+      } else {
+        alert("Failed to update contact.");
+      }
+    } catch (error) {
+      console.error("Error updating contact:", error);
+      alert("An error occurred while updating the contact.");
+    }
+    reset(); 
   };
+
   const handle = (e) => {
     if (e.target.id === "wrapper") onClose();
   };
@@ -43,7 +70,7 @@ const UpdateModal = ({ isVisible, onClose }) => {
             <input
               id="name"
               type="text"
-              {...register("name", { required: "Name is required" })}
+              {...register("contactName", { required: "Name is required" })}
               className={`mt-1 block w-full rounded-md border px-2 py-1 focus:outline-none ${
                 errors.name ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:ring-blue-500 focus:border-blue-500`}
@@ -56,7 +83,7 @@ const UpdateModal = ({ isVisible, onClose }) => {
           <div className="mb-4">
             <label
               htmlFor="address"
-              className="block text-sm font-medium text-gray-700 px-2 py-1 focus:outline-none"
+              className="block text-sm font-medium text-gray-700"
             >
               Address
             </label>
@@ -64,15 +91,13 @@ const UpdateModal = ({ isVisible, onClose }) => {
               id="address"
               type="text"
               {...register("address")}
-              className={
-                "mt-1 block w-full rounded-md border px-2 py-1 focus:outline-none"
-              }
+              className="mt-1 block w-full rounded-md border px-2 py-1 focus:outline-none"
             />
           </div>
 
           <div className="mb-4">
             <label
-              htmlFor="text"
+              htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
               Email
@@ -81,9 +106,7 @@ const UpdateModal = ({ isVisible, onClose }) => {
               id="email"
               type="email"
               {...register("email")}
-              className={
-                "mt-1 block w-full rounded-md border px-2 py-1 focus:outline-none"
-              }
+              className="mt-1 block w-full rounded-md border px-2 py-1 focus:outline-none"
             />
           </div>
 
@@ -109,9 +132,7 @@ const UpdateModal = ({ isVisible, onClose }) => {
               } shadow-sm focus:ring-blue-500 focus:border-blue-500`}
             />
             {errors.phone && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.phone.message}
-              </p>
+              <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>
             )}
           </div>
 
