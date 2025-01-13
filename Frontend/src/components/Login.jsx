@@ -6,7 +6,9 @@ import axios from "../utilities/axios";
 
 const loginDataSubmit = async (data)=>{
   try {
-    const response = await axios.post('/login', data);
+    const response = await axios.post('/login', data,{
+      withCredentials: true, 
+    });
     return response.data;
   } catch (error) {
     console.log('Failed to create account or network problems');
