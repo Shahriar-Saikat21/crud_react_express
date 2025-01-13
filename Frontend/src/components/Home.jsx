@@ -1,10 +1,32 @@
-import { useState } from "react"
-import UpdateModal from "./UpdateModal"
-import DeleteModal from "./DeleteModal"
+import { useState, useEffect } from "react";
+import axios from "../utilities/axios"; 
+import UpdateModal from "./UpdateModal";
+import DeleteModal from "./DeleteModal";
 
 const Home = () => {
+  const [contacts, setContacts] = useState([]); 
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  // Fetch all contacts on component mount
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const response = await axios.get("/getAll", {
+          withCredentials: true, 
+        });
+        if (response.data.success) {
+          setContacts(response.data.data);
+        } else {
+          console.error("Failed to fetch contacts");
+        }
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      }
+    };
+    fetchContacts();
+  }, []);
+
   return (
     <div className="w-full md:mx-w-[1460px]">
       <h1 className="text-3xl font-primary font-semibold text-black md:pl-[100px] mb-1 text-center">
@@ -15,7 +37,7 @@ const Home = () => {
           <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div className="overflow-hidden">
               <table className="min-w-full text-left text-sm font-light">
-                <thead className="border-b font-bold text-primary ">
+                <thead className="border-b font-bold text-primary">
                   <tr>
                     <th scope="col" className="px-6 py-4 font-primary">
                       Name
@@ -38,26 +60,40 @@ const Home = () => {
                   </tr>
                 </thead>
                 <tbody className="font-semibold text-primary">
-                  <tr  className="border-b transition duration-300 ease-in-out hover:bg-gray-300 ">
-                    <td className="whitespace-nowrap px-6 py-4 font-medium">
-                      Saikat
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">333,Dhaka,BD</td>
-                    <td className="whitespace-nowrap px-6 py-4">saikat@gmail.com</td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      888-9999
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      <button type="submit" className="text-green-500 hover:text-green-700 font-primary font-bold" onClick={() => setShowUpdateModal(true)}>
-                        Update
-                      </button>
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      <button type="submit" className="text-red-500 hover:text-red-700 font-primary font-bold" onClick={()=>setShowDeleteModal(true)}>
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
+                  {contacts.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" className="text-center py-4">No contacts available</td>
+                    </tr>
+                  ) : (
+                    contacts.map((contact) => (
+                      <tr key={contact._id} className="border-b transition duration-300 ease-in-out hover:bg-gray-300">
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                          {contact.contactName}
+                        </td>
+                        <td className="whitespace-nowrap px-6 py-4">{contact.address}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{contact.email}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{contact.phone}</td>
+                        <td className="whitespace-nowrap px-6 py-4">
+                          <button
+                            type="submit"
+                            className="text-green-500 hover:text-green-700 font-primary font-bold"
+                            onClick={() => setShowUpdateModal(true)}
+                          >
+                            Update
+                          </button>
+                        </td>
+                        <td className="whitespace-nowrap px-6 py-4">
+                          <button
+                            type="submit"
+                            className="text-red-500 hover:text-red-700 font-primary font-bold"
+                            onClick={() => setShowDeleteModal(true)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -65,15 +101,21 @@ const Home = () => {
         </div>
       </div>
 
-      <UpdateModal isVisible={showUpdateModal} onClose={()=>{
-        setShowUpdateModal(false);
-      }}/>
+      <UpdateModal
+        isVisible={showUpdateModal}
+        onClose={() => {
+          setShowUpdateModal(false);
+        }}
+      />
 
-      <DeleteModal isVisible={showDeleteModal} onClose={()=>{
-        setShowDeleteModal(false);
-      }}/>
+      <DeleteModal
+        isVisible={showDeleteModal}
+        onClose={() => {
+          setShowDeleteModal(false);
+        }}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
