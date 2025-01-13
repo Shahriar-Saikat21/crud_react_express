@@ -9,4 +9,4 @@ credentialRouter.post('/login',credentialController.login);
 
 credentialRouter.post('/signup',credentialController.signup);
 
-credentialRouter.get('/logout',credentialController.logout);
+credentialRouter.post('/logout',credentialController.logout);

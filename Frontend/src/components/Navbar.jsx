@@ -1,11 +1,28 @@
 import logo from '../assets/logo.png';
 import {useState} from 'react'
-import { NavLink} from "react-router-dom";
+import { NavLink,useNavigate} from "react-router-dom";
+import axios from "../utilities/axios";
 import { HiOutlineBars4,HiOutlineXMark } from "react-icons/hi2";
 
 const Navbar = () => {
   const[toggle,setToggle]=useState(false);
   const toggleHandler=()=>{setToggle(!toggle)};
+  const navigate = useNavigate();
+
+  const handleLogout = async (e) => {
+    try {
+      const response = await axios.post('/logout', {}, { withCredentials: true });
+  
+      if (response.data.success) {
+        navigate("/");
+      } else {
+        alert("Logout failed. Try again.");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      alert("Something went wrong. Please try again later.");
+    }
+  };
 
   return (
     <nav className="bg-[#4caf50] fixed w-full h-[60px] ">
@@ -18,7 +35,7 @@ const Navbar = () => {
         <ul className="hidden md:flex justify-center items-center gap-4 ">
           <NavLink to={"/home"}className=" pcNav">Home</NavLink>
           <NavLink to={"/add"}className=" pcNav">Add</NavLink>
-          <NavLink to={"/"}className=" pcNav">Logout</NavLink>
+          <NavLink to={"/"}className=" pcNav" onClick={handleLogout}>Logout</NavLink>
         </ul>
         <div className='md:hidden' onClick={toggleHandler}>
           {
@@ -30,7 +47,7 @@ const Navbar = () => {
           <ul className=" p-5 flex flex-col gap-2">
             <NavLink to={"/home"} className=" mobileNav">Home</NavLink>
             <NavLink to={"/add"} className=" mobileNav">Add</NavLink>
-            <NavLink to={"/"} className=" mobileNav">Logout</NavLink>      
+            <NavLink className=" mobileNav" onClick={handleLogout}>Logout</NavLink>      
           </ul>
         </div>       
       </div>
