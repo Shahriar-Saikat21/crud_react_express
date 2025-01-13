@@ -5,7 +5,7 @@ import { credentialController } from '../controllers/credentialController.js';
 
 export const credentialRouter = express.Router();
 
-credentialRouter.get('/login',credentialController.login);
+credentialRouter.post('/login',credentialController.login);
 
 credentialRouter.post('/signup',credentialController.signup);
 

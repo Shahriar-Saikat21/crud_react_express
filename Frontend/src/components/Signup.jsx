@@ -1,13 +1,32 @@
 import {useForm} from 'react-hook-form';
 import logo from "../assets/logo.png";
+import {useNavigate } from "react-router-dom";
+import axios from "../utilities/axios";
+
+const signupDataSubmit = async (data)=>{
+  try {
+    const response = await axios.post('/signup', data);
+    return response.data;
+  } catch (error) {
+    console.log('Failed to create account or network problems');
+  }
+}
 
 const Signup = () => {
+  const navigate = useNavigate();
 
   //form hook
   const {register,handleSubmit,formState:{errors},reset} = useForm();
-
+  
   //submit function
-  const useSubmit = () => {
+  const useSubmit = async(data) => {
+    const result = await signupDataSubmit(data);
+    if (result.success) {
+      alert("Signup Successful");
+      navigate("/");
+    } else {
+      alert("Signup failed");
+    }
     reset();
   };
 
