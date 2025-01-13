@@ -1,13 +1,13 @@
 function onDelete() {
-    console.log("Delete Btn Clicked")
+  console.log("Delete Btn Clicked");
 }
 
-const DeleteModal = ({isVisible,onClose}) => {
-    const handle = (e) => {
-        if (e.target.id === "wrapper") onClose();
-      };
-    
-      if (!isVisible) return null;
+const DeleteModal = ({ isVisible, onClose }) => {
+  const handle = (e) => {
+    if (e.target.id === "wrapper") onClose();
+  };
+
+  if (!isVisible) return null;
   return (
     <div
       id="wrapper"
@@ -18,18 +18,22 @@ const DeleteModal = ({isVisible,onClose}) => {
         <h1 className="text-xl text-black font-semibold font-primary text-center mb-4">
           Are you sure to delete this contact ?
         </h1>
-        
+
         <div className="flex justify-center items-center gap-2">
-        <button type="submit" className="btn-Delete inline-block" onClick={()=>onDelete()}>
+          <button
+            type="submit"
+            className="btn-Delete inline-block"
+            onClick={() => onDelete()}
+          >
             Delete
-        </button>
-        <button className="btn-Cancel inline-block" onClick={() => onClose()}>
+          </button>
+          <button className="btn-Cancel inline-block" onClick={() => onClose()}>
             Cancel
-        </button>
+          </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DeleteModal
+export default DeleteModal;
