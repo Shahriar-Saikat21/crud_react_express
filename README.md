@@ -4,11 +4,12 @@ This project demonstrates a full-stack CRUD (Create, Read, Update, Delete) appli
 
 ## Project Setup
 
-## Prerequisite
--> Node JS: Version 18 or upper <br/>
--> MongoDB 
+### Prerequisites
+Before you begin, ensure you have the following installed on your system:
+- **Node.js**: Version 18 or higher
+- **MongoDB**: Either [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or a local installation of MongoDB
 
-### Clone the repository
+### Clone the Repository
 To get started, clone the repository:
 ```bash
 git clone https://github.com/Shahriar-Saikat21/crud_react_express.git
@@ -89,3 +90,36 @@ PUT /update: Update an existing contact. <br/>
 DELETE /delete: Delete a contact. <br/>
 ## Authentication
 JWT tokens are used for authentication. Store the token in cookies after logging in.
+
+
+## Example API Request
+- **Sign Up**
+```bash
+POST /signup
+Content-Type: application/json
+{
+  "name": "John Doe",
+  "password": "securePassword123"
+}
+```
+- **Login**
+```bash
+POST /login
+Content-Type: application/json
+{
+  "name": "John Doe",
+  "password": "securePassword123"
+}
+```
+- **Add Contact** : You can leave the Address and Email sections empty
+```bash
+POST /add
+Content-Type: application/json
+{
+  "name": "Jane Doe",
+  "address": "1200-LA",
+  "phone": "123-456-7890",
+  "email": "jane@example.com"
+},
+with credential: true
+```
