@@ -1,52 +1,40 @@
 import { Link } from "react-router-dom";
-import {useForm} from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import logo from "../assets/logo.png";
-import {useNavigate } from "react-router-dom";
-import axios from "../utilities/axios";
-
-const loginDataSubmit = async (data)=>{
-  try {
-    const response = await axios.post('/login', data,{
-      withCredentials: true, 
-    });
-    return response.data;
-  } catch (error) {
-    console.log('Failed to create account or network problems');
-  }
-}
+import { useContext } from "react"; 
+import AuthContext from "../context/AuthContext"; 
 
 const Login = () => {
-  const navigate = useNavigate();
-  //form hook
-  const {register,handleSubmit,formState:{errors},reset} = useForm();
+  const { loginUser } = useContext(AuthContext); // Access loginUser from context
 
-  //login function
-  const useSubmit = async(data) => { 
-    const result = await loginDataSubmit(data);
-    if (result.success) {
-      navigate("/home");
-    } else {
-      alert("Login failed");
-    }
-    reset();
+  // Form hook
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+
+  // Form submission handler
+  const useSubmit = async (data) => {
+    const result = await loginUser(data); // Use loginUser from context
+    reset(); // Reset form fields
   };
-
 
   return (
     <div className="flex border-2 rounded-md justify-center items-center md:mx-4">
       <div className="hidden md:block">
         <img src={logo} alt="logo" />
       </div>
-      <div className=" px-10 py-6">
+      <div className="px-10 py-6">
         <h1 className="text-4xl mb-2 pt-4 pr-5 font-bold font-primary text-[#4caf50]">
           Welcome to Contacts Locker
         </h1>
         <h1 className="text-3xl text-[#4caf50] mb-4 pt-4 pr-5 font-primary">Login</h1>
-        <form className="flex flex-col justify-center items-start " onSubmit={handleSubmit(useSubmit)} noValidate>
+        <form
+          className="flex flex-col justify-center items-start"
+          onSubmit={handleSubmit(useSubmit)}
+          noValidate
+        >
           <input
             type="text"
             placeholder="Enter User Name"
-            className=" formInput"
+            className="formInput"
             {...register("userName", {
               required: {
                 value: true,
@@ -54,12 +42,14 @@ const Login = () => {
               },
             })}
           />
-          <p className=" mb-2 text-[#FF0000] font-primary font-semibold">{errors.userName?.message}</p>
+          <p className="mb-2 text-[#FF0000] font-primary font-semibold">
+            {errors.userName?.message}
+          </p>
 
           <input
             type="password"
             placeholder="Enter Password"
-            className=" formInput"
+            className="formInput"
             {...register("password", {
               required: {
                 value: true,
@@ -67,17 +57,18 @@ const Login = () => {
               },
             })}
           />
-          <p className=" mb-2 text-[#FF0000] font-semibold font-primary">{errors.password?.message}</p>
-          <button
-            className="btn"
-          >
-            Login
-          </button>
+          <p className="mb-2 text-[#FF0000] font-semibold font-primary">
+            {errors.password?.message}
+          </p>
+          <button className="btn">Login</button>
         </form>
         <h2 className="text-sm text-black inline-block mr-2 font-primary">
-          Not signup yet??
+          Not signed up yet??
         </h2>
-        <Link to={"/signup"} className="text-xl text-[#4caf50] underline font-primary">
+        <Link
+          to={"/signup"}
+          className="text-xl text-[#4caf50] underline font-primary"
+        >
           SignUp
         </Link>
       </div>

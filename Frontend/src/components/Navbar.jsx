@@ -1,23 +1,18 @@
 import logo from '../assets/logo.png';
 import {useState} from 'react'
-import { NavLink,useNavigate} from "react-router-dom";
-import axios from "../utilities/axios";
+import { NavLink} from "react-router-dom";
 import { HiOutlineBars4,HiOutlineXMark } from "react-icons/hi2";
+import { useContext } from "react"; 
+import AuthContext from "../context/AuthContext";
 
 const Navbar = () => {
   const[toggle,setToggle]=useState(false);
   const toggleHandler=()=>{setToggle(!toggle)};
-  const navigate = useNavigate();
+  const { logoutUser } = useContext(AuthContext);
 
   const handleLogout = async (e) => {
     try {
-      const response = await axios.post('/logout', {}, { withCredentials: true });
-  
-      if (response.data.success) {
-        navigate("/");
-      } else {
-        alert("Logout failed. Try again.");
-      }
+      const result = await logoutUser();
     } catch (error) {
       console.error("Error during logout:", error);
       alert("Something went wrong. Please try again later.");

@@ -19,7 +19,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // CORS- for cross origin request
 app.use(cors({
-    origin: 'http://localhost:5174',
+    origin: 'http://localhost:5173',
     credentials: true
 }));
 
